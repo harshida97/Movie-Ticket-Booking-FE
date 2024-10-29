@@ -10,7 +10,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   // Centralize API URL using environment variable or fallback to localhost
-  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+  const apiUrl = import.meta.env.VITE_API_URL
 
 
   const handleChange = (e) => {
