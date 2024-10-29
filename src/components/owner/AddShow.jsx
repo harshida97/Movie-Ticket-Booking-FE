@@ -12,6 +12,11 @@ const AddShow = () => {
   const [theaterDetails, setTheaterDetails] = useState(null);
 
 
+  // Centralize API URL using environment variable or fallback to localhost
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+
+
 
   const [showDetails, setShowDetails] = useState({
     movie: '',
@@ -26,7 +31,7 @@ const AddShow = () => {
   useEffect(() => {
     const fetchTheaterDetails = async (id) => {
         try {
-            const response = await axios.get(`http://localhost:3000/api/theaters/get-theaters/${id}`);
+            const response = await axios.get(`${apiUrl}/api/theaters/get-theaters/${id}`);
             console.log(response.data);
             setShow(response.data);
         } catch (error) {
@@ -73,7 +78,7 @@ const AddShow = () => {
     };
 
     try {
-        const response = await axios.post('http://localhost:3000/api/shows/addshow', formData, config);
+        const response = await axios.post(`${apiUrl}/api/shows/addshow`, formData, config);
         alert('Show added successfully');
     } catch (error) {
         alert('Error adding show: ' + (error.response?.data?.message || error.message));

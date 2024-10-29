@@ -9,10 +9,15 @@ const TheaterList = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+   // Centralize API URL using environment variable or fallback to localhost
+   const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+
+
   useEffect(() => {
     const fetchTheaters = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/theaters/list-theaters');
+        const response = await axios.get(`${apiUrl}/api/theaters/list-theaters`);
         setTheaters(response.data);
       } catch (error) {
         setError('Error fetching theaters: ' + error.message);

@@ -8,6 +8,9 @@ const Register = () => {
   const [form, setForm] = useState({ name: '', email: '', password: '', role: 'user' });
   const navigate = useNavigate(); 
 
+  // Centralize API URL using environment variable or fallback to localhost
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -15,7 +18,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:3000/api/users/register', form, {
+      await axios.post(`${apiUrl}/api/users/register`, form, {
         withCredentials: true,
       });
 

@@ -8,11 +8,15 @@ const AdTheaterList = () => {
   const [theaters, setTheaters] = useState([]);
   const [error, setError] = useState(null);
 
+  // Centralize API URL using environment variable or fallback to localhost
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+
   // Fetch theaters
   useEffect(() => {
     const fetchTheaters = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/theaters/list-theaters');
+        const response = await axios.get(`${apiUrl}/api/theaters/list-theaters`);
         setTheaters(response.data);
       } catch (error) {
         setError('Error fetching theaters: ' + error.message);
@@ -33,7 +37,7 @@ const AdTheaterList = () => {
     console.log('Decoded token:', decoded); // Log decoded token for debugging
   
     try {
-      const response = await axios.put(`http://localhost:3000/api/theaters/approve/${theaterId}`, {}, {
+      const response = await axios.put(`${apiUrl}/api/theaters/approve/${theaterId}`, {}, {
         headers: {
           Authorization: `Bearer ${token}` // Attach token in the headers
         }

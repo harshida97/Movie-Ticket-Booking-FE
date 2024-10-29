@@ -5,10 +5,14 @@ import OwnerNavbar from '../OwnerNavbar';
 const Bookings = () => {
   const [bookings, setBookings] = useState([]);
 
+  // Centralize API URL using environment variable or fallback to localhost
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/bookings/getallbookings'); // Adjusted route if needed
+        const response = await axios.get(`${apiUrl}/api/bookings/getallbookings`); // Adjusted route if needed
         console.log(response.data); // Inspect the structure of the response
         setBookings(response.data);
       } catch (error) {

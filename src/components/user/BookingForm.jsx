@@ -9,10 +9,15 @@ const BookingForm = () => {
     const [seats, setSeats] = useState(1);
     const [message, setMessage] = useState('');
 
+     // Centralize API URL using environment variable or fallback to localhost
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+
+
     useEffect(() => {
         const fetchShowDetails = async (id) => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/shows/shows/${id}`);
+                const response = await axios.get(`${apiUrl}/api/shows/shows/${id}`);
                 console.log(response.data);
                 setShow(response.data);
             } catch (error) {
@@ -36,7 +41,7 @@ const BookingForm = () => {
 
         try {
             const response = await axios.post(
-                'http://localhost:3000/api/bookings/createbooking',
+                `${apiUrl}/api/bookings/createbooking`,
                 { show: showId, seatsBooked: seats },
                 config
             );

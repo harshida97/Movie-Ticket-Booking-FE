@@ -4,12 +4,15 @@ import AdminNavbar from '../AdminNavbar';
 
 const UsersDetails = () => {
     const [users, setUsers] = useState([]);
+    // Centralize API URL using environment variable or fallback to localhost
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:3000/api/users/users', {
+                const response = await axios.get(`${apiUrl}/api/users/users`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }

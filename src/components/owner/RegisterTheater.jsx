@@ -8,6 +8,10 @@ const RegisterTheater = () => {
     location: ''
   });
 
+  // Centralize API URL using environment variable or fallback to localhost
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -15,7 +19,7 @@ const RegisterTheater = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/theaters/registertheater', form, {
+      const response = await axios.post(`${apiUrl}/api/theaters/registertheater`, form, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}` // JWT token for authentication
         }

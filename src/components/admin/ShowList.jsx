@@ -7,12 +7,16 @@ const ShowList = () => {
   const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Centralize API URL using environment variable or fallback to localhost
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+
  
 
     useEffect(() => {
         const fetchShows = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/shows/showlist'); // Ensure this is the correct endpoint
+                const response = await axios.get(`${apiUrl}/api/shows/showlist`); // Ensure this is the correct endpoint
                 setShows(response.data);
             } catch (err) {
                 setError(err.message);

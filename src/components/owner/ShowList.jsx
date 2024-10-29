@@ -9,12 +9,16 @@ const ShowList = () => {
   const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Centralize API URL using environment variable or fallback to localhost
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+
  
 
     useEffect(() => {
         const fetchShows = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/shows/showlist'); // Ensure this is the correct endpoint
+                const response = await axios.get(`${apiUrl}/api/shows/showlist`); // Ensure this is the correct endpoint
                 setShows(response.data);
             } catch (err) {
                 setError(err.message);
@@ -39,7 +43,7 @@ const ShowList = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this Show?')) {
       try {
-        await axios.delete(`http://localhost:3000/api/shows/delete/${id}`, {
+        await axios.delete(`${apiUrl}/api/shows/delete/${id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }
@@ -68,7 +72,7 @@ const ShowList = () => {
                     >
                         {/* Directly access show properties */}
                         <img 
-                            src={`http://localhost:3000/${show.image}`} 
+                            src={`${apiUrl}/${show.image}`} 
                             alt={show.movie} // Using movie title as alt text
                             className="w-full h-48 object-cover mb-4 rounded-lg"
                         />

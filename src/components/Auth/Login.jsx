@@ -9,6 +9,10 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Centralize API URL using environment variable or fallback to localhost
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -18,7 +22,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-        const response = await axios.post('http://localhost:3000/api/users/login', form, {
+        const response = await axios.post(`${apiUrl}/api/users/login`, form, {
             withCredentials: true,
         });
 

@@ -7,10 +7,15 @@ const UserHome = () => {
     const [shows, setShows] = useState([]);
     const navigate = useNavigate();
 
+     // Centralize API URL using environment variable or fallback to localhost
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+
+
     useEffect(() => {
         const fetchShows = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/shows/showlist');
+                const response = await axios.get(`${apiUrl}/api/shows/showlist`);
                 setShows(response.data);
             } catch (error) {
                 alert('Error fetching shows: ' + error.message);
@@ -39,7 +44,7 @@ const UserHome = () => {
                     >
                         {/* Directly access show properties */}
                         <img 
-                            src={`http://localhost:3000/${show.image}`} 
+                            src={`${apiUrl}/${show.image}`} 
                             alt={show.movie} // Using movie title as alt text
                             className="w-full h-48 object-cover mb-4 rounded-lg"
                         />
