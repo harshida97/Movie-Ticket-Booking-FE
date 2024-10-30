@@ -28,11 +28,11 @@ const Register = () => {
 
       // Navigate based on the role
       if (form.role === 'admin') {
-        navigate('/admindashboard'); // Navigate to MovieList if the user is an Admin
+        navigate('/admin-dashboard'); // Navigate to MovieList if the user is an Admin
       } else if (form.role === 'owner') {
-        navigate('/ownerdashboard'); // Navigate to OwnerDashboard if the user is an Owner
+        navigate('/owner-dashboard'); // Navigate to OwnerDashboard if the user is an Owner
       } else if (form.role === 'user') {
-        navigate('/userdashboard'); // Navigate to UserDashboard if the user is a regular User
+        navigate('/user-dashboard'); // Navigate to UserDashboard if the user is a regular User
       } else {
         alert('Registration successful, but you do not have access to any dashboards.');
       }

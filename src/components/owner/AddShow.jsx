@@ -9,7 +9,7 @@ const AddShow = () => {
 
   // State to hold theater details
   const { theaterId } = useParams(); // Get the theater ID from the URL
-  const [theaterDetails, setTheaterDetails] = useState(null);
+  //const [theaterDetails, setTheaterDetails] = useState(null);
 
 
   // Centralize API URL using environment variable or fallback to localhost
