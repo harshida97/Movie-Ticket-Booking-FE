@@ -76,7 +76,7 @@ const ShowList = () => {
                             alt={show.movie} // Using movie title as alt text
                             className="w-full h-48 object-cover mb-4 rounded-lg"
                         />
-                        <h2 className="text-xl font-semibold mb-2">Movie: {show.movie}</h2>
+                        <h2 className="text-xl font-semibold mb-2"> {show.movie}</h2>
                         <p className="text-gray-700 mb-1">Showtime: {new Date(show.showtime).toLocaleString()}</p>
                         <p className="text-gray-700 mb-1">Seats Available: {show.seatsAvailable}</p>
                         <p className="text-gray-700 mb-1">Price per Seat: ${show.pricePerSeat}</p>
