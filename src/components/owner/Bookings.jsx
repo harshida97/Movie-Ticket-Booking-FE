@@ -32,7 +32,9 @@ const Bookings = () => {
           <li key={booking._id} className="mb-4 border-b border-gray-200 pb-2">
             <p><strong>User Name:</strong> {booking.user?.name || 'N/A'}</p>
             <p><strong>User Email:</strong> {booking.user?.email || 'N/A'}</p>
-            <p><strong>Show Title:</strong> {booking.show?.title || 'N/A'}</p>
+            <p><strong>Show:</strong> {booking.show?.movie || 'N/A'}</p>
+            <p><strong>Theater:</strong> {booking.theater?.theatername || 'N/A'}</p>
+            <p><strong>Time</strong> {booking.show?.showtime || 'N/A'}</p>
             <p><strong>Seats Booked:</strong> {booking.seatsBooked}</p>
             <p><strong>Total Amount:</strong> ${booking.totalAmount}</p>
           </li>

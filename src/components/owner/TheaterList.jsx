@@ -27,8 +27,8 @@ const TheaterList = () => {
     fetchTheaters();
   }, []);
 
-  const handleAddShow = (theaterId) => {
-    navigate('/addshows'); // Navigate to Add Show page with 
+  const handleAddShow = (theater) => {
+    navigate('/addshows', { state: { theaterId: theater._id, theaterName: theater.theaterName } }); // Navigate to Add Show page with 
   };
 
   return (
@@ -43,7 +43,7 @@ const TheaterList = () => {
           ) : (
             theaters.map((theater) => (
               <div key={theater._id} className="theater-card p-4 border rounded shadow-md bg-white">
-                <h2 className="text-xl font-semibold">{theater.name}</h2>
+                <h2 className="text-xl font-semibold">Theater: {theater.theaterName}</h2>
                 <p className="text-gray-700">Location: {theater.location}</p>
                 <p className="text-gray-700">Owner: {theater.owner ? theater.owner.name : 'Unknown'}</p>
                 <p className="text-green-700 font-semibold">
@@ -51,7 +51,7 @@ const TheaterList = () => {
                 </p>
                 {theater.isApproved && (
                   <button
-                    onClick={() => handleAddShow()}
+                    onClick={() => handleAddShow(theater)}
                     className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
                   >
                     Add Show

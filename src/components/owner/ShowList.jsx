@@ -77,6 +77,9 @@ const ShowList = () => {
                             className="w-full h-48 object-cover mb-4 rounded-lg"
                         />
                         <h2 className="text-xl font-semibold mb-2"> {show.movie}</h2>
+                        <p className="text-gray-700 mb-1">Theater: {show.theater?.theaterName || 'Unknown'}</p>
+                        <p className="text-gray-700 mb-1">Location: {show.theater?.location || 'N/A'}</p>
+                        <p className="text-gray-700 mb-1">Release Date: {new Date(show.releaseDate).toLocaleString()}</p>
                         <p className="text-gray-700 mb-1">Showtime: {new Date(show.showtime).toLocaleString()}</p>
                         <p className="text-gray-700 mb-1">Seats Available: {show.seatsAvailable}</p>
                         <p className="text-gray-700 mb-1">Price per Seat: ${show.pricePerSeat}</p>

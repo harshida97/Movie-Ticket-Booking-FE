@@ -4,7 +4,7 @@ import OwnerNavbar from '../OwnerNavbar';
 
 const RegisterTheater = () => {
   const [form, setForm] = useState({
-    name: '',
+    theaterName: '',
     location: ''
   });
 
@@ -32,7 +32,7 @@ const RegisterTheater = () => {
       localStorage.setItem('theaterId', theaterId); // Store the theater ID
 
       alert('Theater registered successfully');
-      setForm({ name: '', location: '' }); // Reset the form
+      setForm({ theaterName: '', location: '' }); // Reset the form
     } catch (error) {
       alert('Error registering theater: ' + (error.response?.data?.message || error.message));
     }
@@ -49,8 +49,8 @@ const RegisterTheater = () => {
             <label className="block text-sm font-medium text-gray-700">Theater Name</label>
             <input
               type="text"
-              name="name"
-              value={form.name}
+              name="theaterName"
+              value={form.theaterName}
               onChange={handleChange}
               placeholder="Theater Name"
               required

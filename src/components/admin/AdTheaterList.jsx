@@ -3,14 +3,12 @@ import axios from 'axios';
 import AdminNavbar from '../AdminNavbar';
 import jwt_decode from 'jwt-decode';
 
-
 const AdTheaterList = () => {
   const [theaters, setTheaters] = useState([]);
   const [error, setError] = useState(null);
 
   // Centralize API URL using environment variable or fallback to localhost
   const apiUrl = import.meta.env.VITE_API_URL;
-
 
   // Fetch theaters
   useEffect(() => {
@@ -19,7 +17,7 @@ const AdTheaterList = () => {
         const response = await axios.get(`${apiUrl}/api/theaters/list-theaters`);
         setTheaters(response.data);
       } catch (error) {
-        setError('Error fetching theaters: ' + error.message);
+        setError('Error fetching theaters: ' + (error.response?.data?.message || error.message));
       }
     };
 
@@ -32,19 +30,29 @@ const AdTheaterList = () => {
       setError('No authentication token found.');
       return;
     }
-  
+
     const decoded = jwt_decode(token);
     console.log('Decoded token:', decoded); // Log decoded token for debugging
-  
+
+    // Check if token is expired
+    if (decoded.exp * 1000 < Date.now()) {
+      setError('Session expired. Please log in again.');
+      return;
+    }
+
     try {
-      const response = await axios.put(`${apiUrl}/api/theaters/approve/${theaterId}`, {}, {
-        headers: {
-          Authorization: `Bearer ${token}` // Attach token in the headers
+      const response = await axios.put(
+        `${apiUrl}/api/theaters/approve/${theaterId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}` // Attach token in the headers
+          }
         }
-      });
-      
+      );
+
       console.log('Approval response:', response.data); // Log the response for approval
-  
+
       // Update theater list to reflect approval status
       setTheaters((prevTheaters) =>
         prevTheaters.map((theater) =>
@@ -52,14 +60,15 @@ const AdTheaterList = () => {
         )
       );
     } catch (error) {
-      console.error('Error approving theater:', error.response?.data || error.message); // Log error response
-      setError('Error approving theater: ' + error.response?.data?.message || error.message);
+      if (error.response) {
+        console.error('Error approving theater:', error.response.data || error.message); // Log error response
+        setError('Error approving theater: ' + (error.response.data?.message || error.message));
+      } else {
+        console.error('Error approving theater:', error.message); // If no response, log the message
+        setError('Error approving theater: ' + error.message);
+      }
     }
   };
-  
-
-  
-  
 
   return (
     <div>
@@ -74,7 +83,7 @@ const AdTheaterList = () => {
           ) : (
             theaters.map((theater) => (
               <div key={theater._id} className="theater-card p-4 border rounded shadow-md bg-white">
-                <h2 className="text-xl font-semibold">{theater.name}</h2>
+                <h2 className="text-xl font-semibold">{theater.theaterName}</h2>
                 <p className="text-gray-700">Location: {theater.location}</p>
                 <p className="text-gray-700">Owner: {theater.owner ? theater.owner.name : 'Unknown'}</p>
                 <p className="text-green-700 font-semibold">
@@ -90,8 +99,6 @@ const AdTheaterList = () => {
                     Approve
                   </button>
                 )}
-
-                
               </div>
             ))
           )}

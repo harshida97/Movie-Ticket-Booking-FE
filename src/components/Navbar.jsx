@@ -9,7 +9,7 @@ const Navbar = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('token'); // Clear the token
-        navigate('/register'); // Redirect to the login page
+        navigate('/'); // Redirect to the login page
       };
 
 

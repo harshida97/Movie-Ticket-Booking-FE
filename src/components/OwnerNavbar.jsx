@@ -65,9 +65,11 @@ const OwnerNavbar = () => {
                     <div className="flex flex-col items-center">
                         <Link to="/register" className="block py-2 text-white">Home</Link>
                         <Link to="/theaters" className="block py-2 text-white">Theaters</Link>
-                        <Link to="/shows" className="block py-2 text-white">Shows</Link>
-                        <Link to="/allbookings" className="block py-2 text-white">Bookings</Link>
                         <Link to="/addtheater" className="block py-2 text-white">New Theater</Link>
+                        <Link to="/shows" className="block py-2 text-white">Shows</Link>
+                        <Link to="/addshows" className="block py-2 text-white">Add New Show</Link>
+                        <Link to="/allbookings" className="block py-2 text-white">Bookings</Link>
+                        
                         <button 
                             onClick={handleLogout} 
                             className="block py-2 text-white"
@@ -82,9 +84,11 @@ const OwnerNavbar = () => {
                 <div className="hidden lg:flex lg:items-center lg:justify-end space-x-6 text-white">
                     <Link to="/register">Home</Link>
                     <Link to="/theaters">Theaters</Link>
-                    <Link to="/shows">Shows</Link>
-                    <Link to="/allbookings">Bookings</Link>
                     <Link to="/addtheater">New Theater</Link>
+                    <Link to="/shows">Shows</Link>
+                    <Link to="/addshows">Add New Show</Link>
+                    <Link to="/allbookings">Bookings</Link>
+                    
                     <button onClick={handleLogout}>Logout</button>
                     <ToggleComponent />
                 </div>

@@ -8,20 +8,21 @@ const BookingForm = () => {
     const [show, setShow] = useState(null);
     const [seats, setSeats] = useState(1);
     const [message, setMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [totalAmount, setTotalAmount] = useState(0);
 
-     // Centralize API URL using environment variable or fallback to localhost
-  const apiUrl = import.meta.env.VITE_API_URL;
-
-
+    // Centralize API URL using environment variable or fallback to localhost
+    const apiUrl = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
         const fetchShowDetails = async (id) => {
             try {
                 const response = await axios.get(`${apiUrl}/api/shows/shows/${id}`);
-                console.log(response.data);
                 setShow(response.data);
+                setTotalAmount(response.data.pricePerSeat); // Initial amount calculation
             } catch (error) {
                 console.error('Error fetching show details:', error);
+                setErrorMessage('Failed to load show details. Please try again later.');
             }
         };
         if (showId) {
@@ -31,6 +32,12 @@ const BookingForm = () => {
 
     const handleBooking = async (e) => {
         e.preventDefault();
+
+        // Prevent booking more seats than available
+        if (seats > show.seatsAvailable) {
+            setErrorMessage(`Only ${show.seatsAvailable} seats are available.`);
+            return;
+        }
 
         const token = localStorage.getItem('token'); // Assuming JWT is stored in localStorage
         const config = {
@@ -46,63 +53,78 @@ const BookingForm = () => {
                 config
             );
 
-            // Calculate total amount
-            const totalAmount = seats * show.pricePerSeat;
-
             // Show success alert with the total amount
-            alert(`Booking successful! Total amount: $${totalAmount}`);
+            alert(`Booking successful! Total amount: $${seats * show.pricePerSeat}`);
 
             setMessage(response.data.message);
+            setErrorMessage(''); // Reset error message if booking is successful
         } catch (error) {
             console.error('Booking failed:', error);
-            setMessage('Booking failed, please try again.');
+            setMessage('');
+            setErrorMessage('Booking failed, please try again.');
         }
     };
 
     if (!show) return <p>Loading show details...</p>;
 
     return (
-
         <div>
-            <UserNavbar/>
+            <UserNavbar />
+            <div className="p-8">
+                <h1 className="text-4xl text-center text-blue-950 font-bold mb-6">Book Here</h1>
+                <form onSubmit={handleBooking}>
+                    <div className="mb-4 ">
+                        <h2 className="text-xl font-semibold text-center mb-2"> {show.movie}</h2>
+                        {/* Check for the theater data */}
+                        
+                        <p>
+                            Showtime:
+                            <span className="font-bold text-blue-400 text-2xl">
+                                {new Date(show.showtime).toLocaleString()}
+                            </span>
+                        </p>
+                        <p>
+                            Price per Seat:
+                            <span className="font-bold text-blue-400 text-2xl"> ${show.pricePerSeat}</span>
+                        </p>
+                    </div>
 
+                    <div className="mb-4">
+                        <label htmlFor="seats" className="block text-gray-700 font-bold mb-2">
+                            Seats to Book:
+                        </label>
+                        <input
+                            type="number"
+                            id="seats"
+                            value={seats}
+                            onChange={(e) => {
+                                const newSeats = Math.min(e.target.value, show.seatsAvailable);
+                                setSeats(newSeats);
+                                setTotalAmount(newSeats * show.pricePerSeat); // Update total amount dynamically
+                            }}
+                            min="1"
+                            max={show.seatsAvailable}
+                            className="border rounded-lg p-2 w-full"
+                            required
+                        />
+                    </div>
 
-        <div className="p-8">
-            <h1 className="text-4xl text-center text-blue-950 font-bold mb-6">Book Here</h1>
-            <form onSubmit={handleBooking}>
-                <div className="mb-4 ">
-                    <p>Movie: <span className='font-bold text-blue-400 text-2xl'> {show.movie?.title} </span></p>
-                    <p>Theater:<span className='font-bold text-blue-400 text-2xl'> {show.theater?.name}</span></p>
-                    <p>Showtime:<span className='font-bold text-blue-400 text-2xl'>{new Date(show.showtime).toLocaleString()}</span></p>
-                    <p>Price per Seat:<span className='font-bold text-blue-400 text-2xl'> ${show.pricePerSeat}</span></p>
-                </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700 font-bold mb-2">Total Amount:</label>
+                        <p className="text-blue-500 text-xl">${totalAmount}</p>
+                    </div>
 
-                <div className="mb-4">
-                    <label htmlFor="seats" className="block text-gray-700 font-bold mb-2">
-                        Seats to Book:
-                    </label>
-                    <input
-                        type="number"
-                        id="seats"
-                        value={seats}
-                        onChange={(e) => setSeats(e.target.value)}
-                        min="1"
-                        max={show.seatsAvailable}
-                        className="border rounded-lg p-2 w-full"
-                        required
-                    />
-                </div>
+                    <button
+                        type="submit"
+                        className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700"
+                    >
+                        Book Now
+                    </button>
+                </form>
 
-                <button
-                    type="submit"
-                    className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700"
-                >
-                    Book Now
-                </button>
-            </form>
-
-            {message && <p className="mt-4 text-center text-3xl text-green-500">{message}</p>}
-        </div>
+                {message && <p className="mt-4 text-center text-3xl text-green-500">{message}</p>}
+                {errorMessage && <p className="mt-4 text-center text-3xl text-red-500">{errorMessage}</p>}
+            </div>
         </div>
     );
 };
